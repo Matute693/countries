@@ -3,45 +3,28 @@
 
 <div class="row">
     <div class="col">
-        <form (ngSubmit)="buscar()" autocomplete="off">
-            <input 
-                class="form-control"
-                name="termino"
-                [(ngModel)]="termino"
-                placeholder="Buscar pais . . ."
-                type="text">
-        </form>
+        <app-country-input 
+        (onEnter)="buscar( $event )"
+        [placeholder]="placeholder"
+        (onDebonce)="suggestion( $event )"
+        ></app-country-input>
     </div>
 </div>
+
+<ul *ngIf="showSuggestions" class="list-group">
+    <li [routerLink]="['/pais', country.alpha2Code]" *ngFor="let country of countriesSuggestions" class="list-group-item list-group-item-action">
+        {{country.name}}
+    </li>
+    <li (click)="searchSuggestions( termino )" class="list-group-item list-group-item-action">
+        Search "{{ termino }}"
+    </li>
+</ul>
 
 <hr>
 <div *ngIf="thereIsError" class="alert alert-danger">No se encontro nada con el termino ASDK</div>
 
 <div *ngIf="countries.length > 0" class="row">
     <div class="col">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th> # </th>
-                    <th> Bandera </th>
-                    <th> Nombres </th>
-                    <th> Población</th>
-                    <th>  </th>
-                </tr>
-            </thead>
-            <tbody >
-                <tr *ngFor="let country of countries; let i = index">
-                    <td>{{i+1}}</td>
-                    <td>
-                        <img class="small-flag" alt="imagen bandera" src="{{country.flag}}">
-                    </td>
-                    <td>{{country.name}}</td>
-                    <td>{{country.population | number}}</td>
-                    <td>
-                        <a [routerLink]="['/pais', country.alpha2Code]">Ver. . .</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <app-country-table [countries]="countries"></app-country-table>
     </div>
 </div>

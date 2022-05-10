@@ -10,17 +10,22 @@ import { Country } from '../../interfaces/countries.interface';
 })
 export class ByCountryComponent {
 
-  termino: string = ''
+  placeholder: string = 'Buscar por País. . .';
+  termino: string = '';
   thereIsError: boolean = false;
   countries: Country[] = [];
+  countriesSuggestions: Country[] = [];
+  showSuggestions: boolean = false
 
   constructor(private countryService: CountryService) { }
 
-  buscar() {
+
+  buscar(termino: string) {
     this.thereIsError = false;
-    this.countryService.searchCountry(this.termino)
+    this.showSuggestions = false;
+    this.termino = termino;
+    this.countryService.searchCountry(termino)
       .subscribe( (countries) => {
-        console.log(countries);
         this.countries = countries;
         
       }, (err) => {
@@ -28,5 +33,22 @@ export class ByCountryComponent {
         this.countries = [];
       })
   }
+
+  
+  suggestion(termino: string) {
+    this.thereIsError = false;
+    this.termino = termino; 
+    this.showSuggestions = true;
+    this.countryService.searchCountry(termino)
+    .subscribe(
+      country => this.countriesSuggestions = country.splice(0, 5),
+      err => this.countriesSuggestions = []
+    );
+  }
+
+  searchSuggestions( termino: string ) {
+    this.buscar(termino);
+  }
+
 
 }
