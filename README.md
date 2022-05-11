@@ -2,7 +2,10 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.3..
 
-The application allows you to search for different countries, the information was obtained through the following API [](https://restcountries.com/)
+The application allows you to search for different countries, the information was obtained through the following API 
+
+URL de API
+https://restcountries.com/
 
 Create a service to make http requests to the API and I have tested with POSTMAN.
 
